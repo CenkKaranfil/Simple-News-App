@@ -1,68 +1,72 @@
-import React from "react";
+import React from 'react'
 import { View, StyleSheet, Button, Text, Image, FlatList } from "react-native";
-
-
-import Products from "./Products";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
-    addToCart,
+    removeFromCart,
+    resetCart,
     selectCart,
 } from "../redux/CartReducer";
 
-const HomeScreen = ({ navigation }) => {
 
+
+const CartScreen = ({ navigation }) => {
+
+    const Cart = useSelector(selectCart);
     const dispatch = useDispatch();
 
+    const handleRemove = (e) => {
+        dispatch(removeFromCart(e))
+    };
 
-    const handleAdd = (e) => {
-        dispatch(addToCart(e))
-        alert("Item added to cart")
+    const handleReset = () => {
+        dispatch(resetCart());
     };
 
 
 
-
-    const renderProduct = ({ item }) => {
+    const renderCart = ({ item }) => {
         return (
             <View style={styles.card}>
                 <Image style={styles.image} source={item.image} />
                 <Text style={styles.text}> {item.name} </Text>
                 <Text style={styles.text}> {item.price} </Text>
                 <Button
-                    title="Add to Cart"
+                    title="Remove"
                     key={item.key}
-                    onPress={() => handleAdd(item)}
+                    onPress={() => handleRemove(item)}
 
                 />
             </View>)
 
     };
 
+
     return (
         <View style={styles.container}>
             <FlatList
-                data={Products}
+                data={Cart}
                 numColumns={2}
-                renderItem={renderProduct}
+                renderItem={renderCart}
                 keyExtractor={(item) => item.id}
                 ListHeaderComponent={
-                    <View style={styles.header}>
-                        <Text style={styles.text}>Men's Wear</Text>
-                        <Button title="My Cart" onPress={() => navigation.navigate('CartScreen')} />
+                    <View style={styles.topButtons} >
+                        <Button title="Checkout" />
+                        <Button title="Remove all" onPress={handleReset} />
                     </View>
+
                 }
             />
         </View>
-    );
-};
 
-export default HomeScreen;
+    )
+}
+
+export default CartScreen;
 
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 50,
 
     },
     card: {
@@ -106,5 +110,14 @@ export const styles = StyleSheet.create({
 
 
     },
+    topButtons: {
+        margin: 18,
+        justifyContent: 'space-around',
+        flexDirection: 'row',
+
+
+
+    },
+
 
 });
