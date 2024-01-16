@@ -12,7 +12,7 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="DetailScreen" component={DetailScreen}/>
+        <Stack.Screen name="Details" component={DetailScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
 
